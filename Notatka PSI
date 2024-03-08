@@ -1,0 +1,32 @@
+nastepna praca domowa:
+research swojego systemu zobaczyc co w internecie jest na temat naszego celu czy sa akies aplikacje dema itd.
+czy podoba nam sie dala aplikacja czy jest starsza czy nowsza(INEWI) komentarze uzytkownikow korzystajacych z danych aplikacji, konkurencje itd, żeby nie powtarzac błedow
+strona internetowa jako ten research (przeslac link na discordzie) kreaotry stron umiescic informacje obrazki
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-rysujemy uzytkownikow(element diagramu UML diagram DPU) 
+-diagram kontekstowy
+-kwadracik to granice systemu
+-ludzik to aktor
+-strzałka to związek
+diagram usecase sklada sie z stereotypów(ikonki, obrazki)
+-kółeczko- przypadek uzycia
+-przypadki uzycia dotyczace aktorow w srodku jako koleczka w kwadracie
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+PRZYPADEK UŻYCIA:
+okreslamy dwoma slowami
+czasownik w trybie rozkazującym  a drugi rzeczownik
+wszystko musi byc albo w pojedynczej liczbie albo mnogiej nie mozna mieszac 
+ma byc model(wszystko musi byc spojne)
+np( wygeneruj raport, zrob cos)
+złożonosc kółka karta A4 nie wiecej
+sztywne trzymanie sie zasad
+beda ujemne punkty
+Zasada numer 1:
+czy nie jest za duzo badz za malo aktorow bedzie trwac etap 2 tyg
+przypadek uzycia musi miec nazwe i musi byc dla aktora
+co to ma byc za czasownik w nazwie zrobic liste tak by bylo wiadomo i dobrze uzyc czasownika pod napisanie kodu( widac program pod tym czasownikiem)
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+CZASOWNIK:
+usecase jest dobrym usecasem 
+złożonosc usecase jest na poziomie 10-15 programow (jeden usecase 10-15 algorytmow)
+
