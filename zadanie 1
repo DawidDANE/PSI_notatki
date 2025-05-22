@@ -1,0 +1,123 @@
+// CONFIG2
+#pragma config POSCMOD = HS
+#pragma config OSCIOFNC = OFF
+#pragma config FCKSM = CSDCMD
+#pragma config FNOSC = PRI
+#pragma config IESO = ON
+// CONFIG1
+#pragma config WDTPS = PS32768
+#pragma config FWPSA = PR128
+#pragma config WINDIS = ON
+#pragma config FWDTEN = ON
+#pragma config ICS = PGx2
+#pragma config GWRP = OFF
+#pragma config GCP = OFF
+#pragma config JTAGEN = OFF
+
+#include <xc.h>
+#include <libpic30.h>
+
+int main(void) {
+    unsigned char portValue = 0x01;
+    char current6 = 0, prev6 = 0;
+    char current13 = 0, prev13 = 0;
+    TRISA = 0x0000;
+    TRISD = 0xFFFF;
+    int value = 1;
+    int wez_index = 0;
+   unsigned char pattern = 0x07;
+int kierunek = 1;
+    unsigned char kolejka[] = {
+    0x01,0x02,0x04,0x08,0x10,0x20,0x40,0x80,
+    0x81,0x82,0x84,0x88,0x90,0xA0,0xC0,0xC1,
+    0xC2,0xC4,0xC8,0xD0,0xE0,0xE1,0xE2,0xE4,
+    0xE8,0xF0,0xF1,0xF2,0xF4,0xF8,0xF9,0xFA,
+    0xFC,0xFD,0xFE,0xFF
+    };
+    int kolejka_idx = 0;
+    unsigned char lfsr = 0x01;
+    while (1) {
+        switch (value) {
+            case 1:
+                LATA = portValue;
+                portValue++;
+                if (portValue == 0xFF) {
+                    portValue = 0;
+                }
+                break;
+            case 2:
+                LATA = portValue;
+                portValue--;
+                if (portValue == 0xFF) {
+                    portValue = 0xFF;
+                }
+                break;
+            case 3:
+                LATA = portValue ^ (portValue >> 1);
+                portValue++;
+                break;
+            case 4:
+                LATA = portValue ^ (portValue >> 1);
+                portValue--;
+                break;
+            case 5:
+                LATA = ((portValue / 10) << 4) | (portValue % 10);
+                portValue++;
+                if (portValue > 99) portValue = 0;
+                break;
+            case 6:
+                LATA = ((portValue / 10) << 4) | (portValue % 10);
+                if (portValue == 0) portValue = 99;
+                else portValue--;
+                break;
+            case 7:
+                    LATA = pattern;
+    if (kierunek == 1) {
+        pattern <<= 1;
+        if (pattern & 0x80) {
+            kierunek = -1;
+        }
+    } else {
+        pattern >>= 1;
+        if (pattern & 0x01) {
+            kierunek = 1;
+        }
+    }
+    break;
+            case 8:
+             LATA = kolejka[kolejka_idx % (sizeof(kolejka) / sizeof(kolejka[0]))];
+    kolejka_idx++;
+    break;
+    case 9:
+{
+    unsigned char feedback = ((lfsr >> 5) ^ (lfsr >> 4) ^ (lfsr >> 3) ^ (lfsr >> 0)) & 0x01;
+    lfsr = (lfsr >> 1) | (feedback << 5);
+    LATA = lfsr; 
+    break;
+}
+        }
+
+        prev6 = PORTDbits.RD6;
+        __delay32(1000000);
+        current6 = PORTDbits.RD6;
+        if (prev6 == 1 && current6 == 0) {
+            value++;
+            if (value > 9) {
+                value = 1;
+            }
+            portValue = 1;
+        }
+
+        prev13 = PORTDbits.RD13;
+        __delay32(1000000);
+        current13 = PORTDbits.RD13;
+        if (prev13 == 1 && current13 == 0) {
+            value--;
+            if (value < 1) {
+                value = 9;
+            }
+            portValue = 8;
+        }
+    }
+    return 0;
+}
